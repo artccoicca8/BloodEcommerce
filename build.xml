@@ -1,0 +1,226 @@
+<project name="VPOS2_CREDIBANCO_PSE" default="prod" basedir=".">
+	<description>
+        Fuente Ant que genera el EAR
+    </description>
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="eclipse-plugin" value="E:/Downloads/java/J2EE 1.4" />
+	<property name="ambiente" value="testing">
+	</property>
+
+	<target name="init">
+		<tstamp />
+		<property name="build-location" location="${generated}" />
+		<property name="build" location="${build-location}/build" />
+		<property name="wartemp" location="${build-location}/wartemp" />
+		<property name="eartemp" location="${build-location}/eartemp" />
+
+		<mkdir dir="${build-location}" />
+		<mkdir dir="${build}" />
+		<mkdir dir="${wartemp}" />
+		<mkdir dir="${eartemp}" />
+		<mkdir dir="${wartemp}/WebContent" />
+	</target>
+
+
+	<target name="prepare-jar-development" depends="init">
+		<copy file="environment/development/samplePPE.properties" tofile="src/samplePPE.properties" overwrite="true" />
+		<copy file="environment/development/app.properties" tofile="${build}/app.properties" overwrite="true" />
+		<copy file="environment/development/app.properties" tofile="${build}/com/alignet/vpos20/resources/app.properties" overwrite="true" />
+		<copy file="environment/development/app.properties" tofile="${build}/com/alignet/vpos20client/security/resources/app.properties" overwrite="true" />
+		<copy file="environment/development/client-config.wsdd" tofile="${build}/client-config.wsdd" overwrite="true" />
+		<copy file="environment/development/desarrollo.jks" tofile="${build}/desarrollo.jks" overwrite="true" />
+		<copy file="environment/development/errorCodeVPOS20.properties" tofile="${build}/errorCodeVPOS20.properties" overwrite="true" />
+		<copy file="environment/development/IBM4764.properties" tofile="${build}/IBM4764.properties" overwrite="true" />
+		<copy file="environment/development/seguridad.properties" tofile="${build}/seguridad.properties" overwrite="true" />
+		<copy file="environment/development/log4j.properties" tofile="${build}/log4j.properties" overwrite="true" />
+		<copy file="environment/development/server-ks2.jks" tofile="${build}/server-ks2.jks" overwrite="true" />
+		<copy file="environment/development/service.properties" tofile="${build}/service.properties" overwrite="true" />
+		<copy file="environment/development/Credibanco.p12" tofile="${build}/Credibanco.p12" overwrite="true" />
+		<copy file="environment/development/hibernate.cfg.xml" tofile="${build}/hibernate.cfg.xml" overwrite="true" />
+	</target>
+	<target name="prepare-jar-test" depends="init">
+		<copy file="environment/testing/samplePPE.properties" tofile="src/samplePPE.properties" overwrite="true" />
+		<copy file="environment/testing/app.properties" tofile="${build}/app.properties" overwrite="true" />
+		<copy file="environment/testing/app.properties" tofile="${build}/com/alignet/vpos20/resources/app.properties" overwrite="true" />
+		<copy file="environment/testing/app.properties" tofile="${build}/com/alignet/vpos20client/security/resources/app.properties" overwrite="true" />
+		<copy file="environment/testing/client-config.wsdd" tofile="${build}/client-config.wsdd" overwrite="true" />
+		<copy file="environment/testing/desarrollo.jks" tofile="${build}/desarrollo.jks" overwrite="true" />
+		<copy file="environment/testing/errorCodeVPOS20.properties" tofile="${build}/errorCodeVPOS20.properties" overwrite="true" />
+		<copy file="environment/testing/IBM4764.properties" tofile="${build}/IBM4764.properties" overwrite="true" />
+		<copy file="environment/testing/seguridad.properties" tofile="${build}/seguridad.properties" overwrite="true" />
+		<copy file="environment/testing/log4j.properties" tofile="${build}/log4j.properties" overwrite="true" />
+		<copy file="environment/testing/server-ks2.jks" tofile="${build}/server-ks2.jks" overwrite="true" />
+		<copy file="environment/testing/service.properties" tofile="${build}/service.properties" overwrite="true" />
+		<copy file="environment/testing/Credibanco.jks" tofile="${build}/Credibanco.jks" overwrite="true" />
+		<copy file="environment/testing/hibernate.cfg.xml" tofile="${build}/hibernate.cfg.xml" overwrite="true" />
+	</target>
+
+
+
+
+	<target name="prepare-jar-prod" depends="init">
+		<copy file="environment/produccion/samplePPE.properties" tofile="src/samplePPE.properties" overwrite="true" />
+		<copy file="environment/produccion/app.properties" tofile="${build}/app.properties" overwrite="true" />
+		<copy file="environment/produccion/app.properties" tofile="${build}/com/alignet/vpos20/resources/app.properties" overwrite="true" />
+		<copy file="environment/produccion/app.properties" tofile="${build}/com/alignet/vpos20client/security/resources/app.properties" overwrite="true" />
+		<copy file="environment/produccion/client-config.wsdd" tofile="${build}/client-config.wsdd" overwrite="true" />
+		<copy file="environment/produccion/desarrollo.jks" tofile="${build}/desarrollo.jks" overwrite="true" />
+		<copy file="environment/produccion/errorCodeVPOS20.properties" tofile="${build}/errorCodeVPOS20.properties" overwrite="true" />
+		<copy file="environment/produccion/IBM4764.properties" tofile="${build}/IBM4764.properties" overwrite="true" />
+		<copy file="environment/produccion/seguridad.properties" tofile="${build}/seguridad.properties" overwrite="true" />
+		<copy file="environment/produccion/server-ks2.jks" tofile="${build}/server-ks2.jks" overwrite="true" />
+		<copy file="environment/produccion/log4j.properties" tofile="${build}/log4j.properties" overwrite="true" />
+		<copy file="environment/produccion/service.jks" tofile="${build}/service.jks" overwrite="true" />
+		<copy file="environment/produccion/service.properties" tofile="${build}/service.properties" overwrite="true" />
+		<copy file="environment/produccion/Credibanco.jks" tofile="${build}/Credibanco.jks" overwrite="true" />
+		<copy file="environment/produccion/hibernate.cfg.xml" tofile="${build}/hibernate.cfg.xml" overwrite="true" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+
+		<javac destdir="${build}" deprecation="true" debug="true">
+			<src path="src" />
+			<classpath>
+				<fileset dir="${wartemp}">
+					<include name="**/*.*" />
+					<exclude name="**/*.wsdl" />
+				</fileset>
+				<fileset dir="WebContent/WEB-INF/lib">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${eclipse-plugin}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+		<copy todir="${build}">
+			<fileset dir="src" excludes="**\*.java" />
+		</copy>
+	</target>
+
+	<target name="warcreate-development" depends="prepare-jar-development,compile">
+		<antcall target="prepare-jar-development">
+		</antcall>
+		<war destfile="${eartemp}/VPOS2_MM_CRB.war" webxml="WebContent/WEB-INF/web.xml">
+			<fileset dir="WebContent">
+				<exclude name="**/*.jar" />
+				<exclude name="WEB-INF/classes/**/*.*" />
+				<exclude name="wsdl/**/*.*" />
+				<exclude name="WEB-INF/server-config.*" />
+			</fileset>
+			<fileset dir="${wartemp}/WebContent">
+			</fileset>
+			<lib dir="WebContent/WEB-INF/lib">
+				<exclude name="IBM4758_TESTING.jar" />
+				<include name="**/*.jar" />
+			</lib>
+			<lib dir="${wartemp}">
+				<include name="**/*.jar" />
+			</lib>
+			<classes dir="${build}" />
+		</war>
+		<echo message="Created VPOS2.ear ... " level="info" />
+	</target>
+	<target name="warcreate-test" depends="prepare-jar-test,compile">
+		<antcall target="prepare-jar-test">
+		</antcall>
+		<war destfile="${eartemp}/VPOS2_MM_CRB.war" webxml="WebContent/WEB-INF/web.xml">
+			<fileset dir="WebContent">
+				<exclude name="**/*.jar" />
+				<exclude name="WEB-INF/classes/**/*.*" />
+				<exclude name="wsdl/**/*.*" />
+				<exclude name="WEB-INF/server-config.*" />
+			</fileset>
+			<fileset dir="${wartemp}/WebContent">
+			</fileset>
+			<lib dir="WebContent/WEB-INF/lib">
+				<exclude name="IBM4758_TESTING.jar" />
+				<include name="**/*.jar" />
+			</lib>
+			<lib dir="${wartemp}">
+				<include name="**/*.jar" />
+			</lib>
+			<classes dir="${build}" />
+		</war>
+		<echo message="Created VPOS2.ear ... " level="info" />
+	</target>
+
+	<target name="warcreate-prod" depends="prepare-jar-prod,compile">
+		<antcall target="prepare-jar-prod">
+		</antcall>
+		<war destfile="${eartemp}/VPOS2_MM_CRB.war" webxml="WebContent/WEB-INF/web.xml">
+			<fileset dir="WebContent">
+				<exclude name="**/*.jar" />
+				<exclude name="**/*.jar_old" />
+				<exclude name="wsdl/**/*.*" />
+				<exclude name="WEB-INF/classes/**/*.*" />
+				<exclude name="WEB-INF/server-config.*" />
+			</fileset>
+			<fileset dir="${wartemp}/WebContent">
+			</fileset>
+
+			<lib dir="WebContent/WEB-INF/lib">
+				<exclude name="**/*.jar_old" />
+				<exclude name="IBM4758_TESTING.jar" />
+				<include name="**/*.jar" />
+			</lib>
+			<lib dir="${wartemp}">
+				<include name="**/*.jar" />
+			</lib>
+			<classes dir="${build}" />
+		</war>
+	</target>
+
+	<target name="earbuild-development" depends="warcreate-development">
+		<ear destfile="${build-location}/VPOS2_MM_CRB - DEV - ${DSTAMP}.ear" appxml="scripts/application.xml">
+			<fileset dir="${eartemp}" includes="*.jar,*.war" />
+		</ear>
+		<delete dir="${build}">
+		</delete>
+		<delete dir="${wartemp}">
+		</delete>
+		<delete dir="${eartemp}">
+		</delete>
+	</target>
+	<target name="earbuild-test" depends="warcreate-test">
+		<ear destfile="${build-location}/VPOS2_MM_CRB - ${DSTAMP}.ear" appxml="scripts/application.xml">
+			<fileset dir="${eartemp}" includes="*.jar,*.war" />
+		</ear>
+		<delete dir="${build}">
+		</delete>
+		<delete dir="${wartemp}">
+		</delete>
+		<delete dir="${eartemp}">
+		</delete>
+	</target>
+
+	<target name="earbuild-prod" depends="warcreate-prod">
+		<ear destfile="${build-location}/VPOS2_MM_CRB PROD - ${DSTAMP}.ear" appxml="scripts/application.xml">
+			<fileset dir="${eartemp}" includes="*.jar,*.war" />
+		</ear>
+		<delete dir="${build}">
+		</delete>
+		<delete dir="${wartemp}">
+		</delete>
+		<delete dir="${eartemp}">
+		</delete>
+	</target>
+
+	<target name="test">
+		<property name="generated" value="D:/Credibanco/Test/VPOS2" />
+		<antcall target="prepare-jar-test">
+		</antcall>
+		<antcall target="earbuild-test">
+		</antcall>
+	</target>
+
+	<target name="prod">
+		<property name="generated" value="D:/Credibanco/PreProd/VPOS2" />
+		<antcall target="prepare-jar-prod">
+		</antcall>
+		<antcall target="earbuild-prod">
+		</antcall>
+	</target>
+
+</project>
